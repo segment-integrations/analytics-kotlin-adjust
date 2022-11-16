@@ -1,22 +1,15 @@
-// add badges and stuff here
+# Analytics-Kotlin Adjust
 
-# Destination
+Add Adjust device mode support to your applications via this plugin for [Analytics-Kotlin](https://github.com/segmentio/analytics-kotlin)
 
+Adjust integration for [analytics-android](https://github.com/segmentio/analytics-android).
+
+
+// TODO
 ## Getting Started
 
-1. Create repo from this template. The name of the repo should follow this pattern `project-language-destination`. For example `analytics-kotlin-firebase`
-2. In `settings.gralde.kts`, change `rootProject.name` to match your repo name.
-3. In `gradle.properties`, update the fields with `<>` brackets
-4. Delete `com.segment.analytics.kotlin.destinations.Destination.kt`
-5. Create a directory with the destination name under `com.segment.analytics.kotlin.destinations`. For example Firebase, `com.segment.analytics.kotlin.destinations.firebase`
-6. Create your destination class under the directory created in step 5. For example Firebase, `com.segment.analytics.kotlin.destinations.firebase.Firebase.kt`
-7. update Android manifest with your package name. For example Firebase
-   ```xml
-    <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-        package="com.segment.analytics.kotlin.destinations.firebase">
-   ```
-8. Implement destination
-9. Add tests
+## Adding the dependency
+To install the Segment-Amplitude integration, simply add this line to your gradle file:
 
 
 ## License
