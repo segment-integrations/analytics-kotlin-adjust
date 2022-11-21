@@ -9,7 +9,15 @@ Adjust integration for [analytics-android](https://github.com/segmentio/analytic
 ## Getting Started
 
 ## Adding the dependency
-To install the Segment-Amplitude integration, simply add this line to your gradle file:
+To install the Segment-Adjust integration, simply add this line to your gradle file:
+
+## Support
+
+Please use Github issues, Pull Requests, or feel free to reach out to our [support team](https://segment.com/help/).
+
+## Integrating with Segment
+
+Interested in integrating your service with us? Check out our [Partners page](https://segment.com/partners/) for more details.
 
 
 ## License

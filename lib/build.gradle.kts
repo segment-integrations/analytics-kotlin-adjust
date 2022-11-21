@@ -42,17 +42,17 @@ android {
 dependencies {
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
 
-    implementation("com.segment.analytics.kotlin:android:1.5.0")
+    implementation("com.segment.analytics.kotlin:android:1.6.2")
     implementation("androidx.multidex:multidex:2.0.1")
     implementation("androidx.core:core-ktx:1.7.0")
 
-    implementation("androidx.lifecycle:lifecycle-process:2.4.1")
-    implementation("androidx.lifecycle:lifecycle-common-java8:2.4.1")
+    implementation("androidx.lifecycle:lifecycle-process:2.5.1")
+    implementation("androidx.lifecycle:lifecycle-common-java8:2.5.1")
 }
 
 // Partner Dependencies
 dependencies {
-    // TODO add your partner deps here
+    api("com.adjust.sdk:adjust-android:4.33.0")
 }
 
 // Test Dependencies
@@ -61,9 +61,9 @@ dependencies {
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.0")
     testImplementation("io.mockk:mockk:1.12.4")
 
-    // Add Roboelectric dependencies.
+    // Add Robolectric dependencies.
     testImplementation("org.robolectric:robolectric:4.7.3")
-    testImplementation("androidx.test:core:1.4.0")
+    testImplementation("androidx.test:core:1.5.0")
 
     // Add JUnit4 legacy dependencies.
     testRuntimeOnly("org.junit.vintage:junit-vintage-engine:5.8.2")
@@ -75,10 +75,10 @@ dependencies {
     testImplementation("org.skyscreamer:jsonassert:1.5.0")
 }
 
-// Android Test Deps
+// Android Test Dependencies
 dependencies {
-    androidTestImplementation("androidx.test.ext:junit:1.1.3")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
+    androidTestImplementation("androidx.test.ext:junit:1.1.4")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.0")
 }
 
 tasks.withType<Test> {
