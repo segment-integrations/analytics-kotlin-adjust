@@ -23,6 +23,10 @@ Please use Github issues, Pull Requests, or feel free to reach out to our [suppo
 Interested in integrating your service with us? Check out our [Partners page](https://segment.com/partners/) for more details.
 
 
+
+
+Please see [our documentation](https://segment.com/docs/integrations/adjust/) for more information.
+
 ## License
 ```
 MIT License
