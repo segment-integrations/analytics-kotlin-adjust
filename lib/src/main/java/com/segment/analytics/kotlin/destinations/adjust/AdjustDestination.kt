@@ -27,7 +27,7 @@ class AdjustDestination(
     private var adjustInstance: AdjustInstance = Adjust.getDefaultInstance()
 ) : DestinationPlugin(), AndroidLifecycle {
 
-    private var settings: AdjustSettings? = null
+    internal var settings: AdjustSettings? = null
 
     private val REVENUE_KEY = "revenue"
     private val CURRENCY_KEY = "currency"
