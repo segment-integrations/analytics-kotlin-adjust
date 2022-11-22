@@ -5,11 +5,14 @@ Add Adjust device mode support to your applications via this plugin for [Analyti
 Adjust integration for [analytics-android](https://github.com/segmentio/analytics-android).
 
 
-// TODO
 ## Getting Started
+// TODO
+
 
 ## Adding the dependency
 To install the Segment-Adjust integration, simply add this line to your gradle file:
+// TODO
+
 
 ## Support
 
