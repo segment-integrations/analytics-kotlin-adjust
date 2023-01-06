@@ -65,7 +65,6 @@ class AdjustDestination(
                 }
             }
         }
-
     }
 
     override fun identify(payload: IdentifyEvent): BaseEvent? {

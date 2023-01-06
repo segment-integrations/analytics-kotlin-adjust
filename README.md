@@ -2,16 +2,39 @@
 
 Add Adjust device mode support to your applications via this plugin for [Analytics-Kotlin](https://github.com/segmentio/analytics-kotlin)
 
-Adjust integration for [analytics-android](https://github.com/segmentio/analytics-android).
-
-
-## Getting Started
-// TODO
-
-
 ## Adding the dependency
 To install the Segment-Adjust integration, simply add this line to your gradle file:
-// TODO
+
+```
+implementation 'com.segment.analytics.kotlin.destinations:adjust:<latest_version>'
+```
+
+Or the following for Kotlin DSL
+
+```
+implementation("com.segment.analytics.kotlin.destinations:adjust:<latest_version>")
+```
+
+
+## Using the Plugin in your App
+
+Open the file where you setup and configure the Analytics-Kotlin library.  Add this plugin to the list of imports.
+
+```
+import com.segment.analytics.kotlin.destinations.adjust.AdjustDestination
+```
+
+Just under your Analytics-Kotlin library setup, call `analytics.add(plugin = ...)` to add an instance of the plugin to the Analytics timeline.
+
+```
+    analytics = Analytics("<YOUR WRITE KEY>", applicationContext) {
+        this.flushAt = 3
+        this.trackApplicationLifecycleEvents = true
+    }
+    analytics.add(plugin = AdjustDestination())
+```
+
+Your events will now begin to flow to Adjust in device mode.
 
 
 ## Support
@@ -21,9 +44,6 @@ Please use Github issues, Pull Requests, or feel free to reach out to our [suppo
 ## Integrating with Segment
 
 Interested in integrating your service with us? Check out our [Partners page](https://segment.com/partners/) for more details.
-
-
-
 
 Please see [our documentation](https://segment.com/docs/integrations/adjust/) for more information.
 
