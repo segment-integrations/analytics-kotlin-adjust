@@ -23,9 +23,7 @@ import kotlinx.serialization.json.put
  * @see <a href="https://segment.com/docs/integrations/adjust/">Adjust Integration</a>
  * @see <a href="https://github.com/adjust/android_sdk">Adjust Android SDK</a>
  */
-class AdjustDestination(
-    private var adjustInstance: AdjustInstance = Adjust.getDefaultInstance()
-) : DestinationPlugin(), AndroidLifecycle {
+class AdjustDestination : DestinationPlugin(), AndroidLifecycle {
 
     internal var settings: AdjustSettings? = null
 
@@ -60,16 +58,17 @@ class AdjustDestination(
                             AdjustSegmentAttributionChangedListener(analytics)
                         adjustConfig.setOnAttributionChangedListener(listener)
                     }
-                    adjustInstance.onCreate(adjustConfig)
+                    Adjust.onCreate(adjustConfig)
+                    Adjust.onResume()
                     analytics.log("Adjust Destination loaded")
                 }
             }
         }
     }
 
-    override fun identify(payload: IdentifyEvent): BaseEvent? {
+    override fun identify(payload: IdentifyEvent): BaseEvent {
         setPartnerParams(payload)
-        return super.identify(payload)
+        return payload
     }
 
     override fun track(payload: TrackEvent): BaseEvent? {
@@ -90,15 +89,15 @@ class AdjustDestination(
         if (revenue != 0.0 && currency.isNotEmpty()) {
             event.setRevenue(revenue, currency)
         }
-        analytics.log("Adjust.getDefaultInstance().trackEvent($event);")
-        adjustInstance.trackEvent(event)
+        analytics.log("Adjust.trackEvent($event)")
+        Adjust.trackEvent(event)
         return payload
     }
 
     override fun reset() {
         super.reset()
-        adjustInstance.resetSessionPartnerParameters()
-        analytics.log("Adjust.getDefaultInstance().resetSessionPartnerParameters()")
+        Adjust.resetSessionPartnerParameters()
+        analytics.log("Adjust.resetSessionPartnerParameters()")
     }
 
     /**
@@ -106,12 +105,14 @@ class AdjustDestination(
      */
     override fun onActivityResumed(activity: Activity?) {
         super.onActivityResumed(activity)
-        adjustInstance.onResume()
+        Adjust.onResume()
+        analytics.log("Adjust.onResume()")
     }
 
     override fun onActivityPaused(activity: Activity?) {
         super.onActivityPaused(activity)
-        adjustInstance.onPause()
+        Adjust.onPause()
+        analytics.log("Adjust.onPause()")
     }
 
     /**
@@ -119,12 +120,12 @@ class AdjustDestination(
      */
     private fun setPartnerParams(payload: BaseEvent) {
         if (payload.userId.isNotEmpty()) {
-            adjustInstance.addSessionPartnerParameter("userId", payload.userId)
-            analytics.log("Adjust.getDefaultInstance().addSessionPartnerParameter(userId, ${payload.userId})")
+            Adjust.addSessionPartnerParameter("userId", payload.userId)
+            analytics.log("Adjust.addSessionPartnerParameter(userId, ${payload.userId})")
         }
         if (payload.anonymousId.isNotEmpty()) {
-            adjustInstance.addSessionPartnerParameter("anonymousId", payload.anonymousId)
-            analytics.log("Adjust.getDefaultInstance().addSessionPartnerParameter(anonymousId, ${payload.anonymousId})")
+            Adjust.addSessionPartnerParameter("anonymousId", payload.anonymousId)
+            analytics.log("Adjust.addSessionPartnerParameter(anonymousId, ${payload.anonymousId})")
         }
     }
 

@@ -6,7 +6,6 @@ import android.content.Context
 import android.os.Build
 import com.adjust.sdk.Adjust
 import com.adjust.sdk.AdjustAttribution
-import com.adjust.sdk.AdjustInstance
 import com.segment.analytics.kotlin.core.*
 import com.segment.analytics.kotlin.core.platform.Plugin
 import com.segment.analytics.kotlin.core.utilities.LenientJson
@@ -35,9 +34,6 @@ class AdjustDestinationTests {
     @MockK(relaxUnitFun = true)
     lateinit var mockedAnalytics: Analytics
 
-    @MockK(relaxUnitFun = true)
-    lateinit var mockedAdjustInstance: AdjustInstance
-
     private lateinit var adjustDestination: AdjustDestination
 
     private val sampleAdjustSettings: Settings = LenientJson.decodeFromString(
@@ -65,15 +61,11 @@ class AdjustDestinationTests {
     @Before
     fun setUp() {
         mockkStatic(Adjust::class)
-        every { Adjust.getDefaultInstance() } answers { mockedAdjustInstance }
         adjustDestination = AdjustDestination()
         every { mockedAnalytics.configuration.application } returns mockApplication
         every { mockApplication.applicationContext } returns mockedContext
         mockedAnalytics.configuration.application = mockedContext
-
         adjustDestination.analytics = mockedAnalytics
-
-        mockkStatic(Adjust::class)
     }
 
 
@@ -143,7 +135,7 @@ class AdjustDestinationTests {
         }
         val identifyEvent = adjustDestination.identify(sampleIdentifyEvent)
         assertNotNull(identifyEvent)
-        verify { mockedAdjustInstance.addSessionPartnerParameter("userId", "adjust-UserID-123") }
+        verify { Adjust.addSessionPartnerParameter("userId", "adjust-UserID-123") }
     }
 
     @Test
@@ -166,7 +158,7 @@ class AdjustDestinationTests {
         val identifyEvent = adjustDestination.identify(sampleIdentifyEvent)
         assertNotNull(identifyEvent)
         verify {
-            mockedAdjustInstance.addSessionPartnerParameter(
+            Adjust.addSessionPartnerParameter(
                 "anonymousId",
                 "adjust-anonId-123"
             )
@@ -176,13 +168,12 @@ class AdjustDestinationTests {
     @Test
     fun `reset is handled correctly`() {
         adjustDestination.reset()
-        verify { mockedAdjustInstance.resetSessionPartnerParameters() }
+        verify { Adjust.resetSessionPartnerParameters() }
     }
 
     @Test
     fun `track is handled correctly`() {
         adjustDestination.update(sampleAdjustSettings, Plugin.UpdateType.Initial)
-
         val sampleTrackEvent = TrackEvent(
             event = "foo",
             properties = buildJsonObject {
@@ -198,7 +189,7 @@ class AdjustDestinationTests {
         }
         val trackEvent = adjustDestination.track(sampleTrackEvent)
         assertNotNull(trackEvent)
-//        verify { mockedAdjustInstance.trackEvent(AdjustEvent("foo")) }
+        verify { Adjust.trackEvent(any()) }
     }
 
     @Test
@@ -231,12 +222,12 @@ class AdjustDestinationTests {
     @Test
     fun `onActivityResumed() handled correctly`() {
         adjustDestination.onActivityResumed(mockkClass(Activity::class))
-        verify { mockedAdjustInstance.onResume() }
+        verify { Adjust.onResume() }
     }
 
     @Test
     fun `onActivityPaused() handled correctly`() {
         adjustDestination.onActivityPaused(mockkClass(Activity::class))
-        verify { mockedAdjustInstance.onPause() }
+        verify { Adjust.onPause() }
     }
 }
