@@ -79,11 +79,11 @@ class AdjustDestinationTests {
         /* assertions Adjust config */
         assertNotNull(adjustDestination.settings)
         with(adjustDestination.settings!!) {
-            assertTrue(adjustDestination.settings!!.setEnvironmentProduction)
-            assertTrue(adjustDestination.settings!!.setEventBufferingEnabled)
-            assertTrue(adjustDestination.settings!!.trackAttributionData)
-            assertEquals(adjustDestination.settings!!.appToken, "xyz1234")
-            assertNotNull(adjustDestination.settings!!.customEvents)
+            assertTrue(setEnvironmentProduction)
+            assertTrue(setEventBufferingEnabled)
+            assertTrue(trackAttributionData)
+            assertEquals(appToken, "xyz1234")
+            assertNotNull(customEvents)
         }
     }
 
@@ -194,7 +194,8 @@ class AdjustDestinationTests {
 
     @Test
     fun `trackAttribution data sent correctly to analytics`() {
-        val segmentAttributionChangedListener = AdjustDestination.AdjustSegmentAttributionChangedListener(mockedAnalytics)
+        val segmentAttributionChangedListener =
+            AdjustDestination.AdjustSegmentAttributionChangedListener(mockedAnalytics)
         val attributionData = AdjustAttribution().apply {
             network = "Adjust Network"
             campaign = "Adjust Campaign Name"
@@ -205,18 +206,20 @@ class AdjustDestinationTests {
             trackerName = "bar"
         }
         segmentAttributionChangedListener.onAttributionChanged(attributionData)
-        verify { mockedAnalytics.track("Install Attributed", buildJsonObject {
-            put("provider", "Adjust")
-            put("trackerToken", "foo")
-            put("trackerName", "bar")
-            put("campaign", buildJsonObject {
-                put("source", "Adjust Network")
-                put("name", "Adjust Campaign Name")
-                put("content", "Adjust Click Label")
-                put("adCreative", "Adjust creative")
-                put("adGroup", "Adjust Ad group")
+        verify {
+            mockedAnalytics.track("Install Attributed", buildJsonObject {
+                put("provider", "Adjust")
+                put("trackerToken", "foo")
+                put("trackerName", "bar")
+                put("campaign", buildJsonObject {
+                    put("source", "Adjust Network")
+                    put("name", "Adjust Campaign Name")
+                    put("content", "Adjust Click Label")
+                    put("adCreative", "Adjust creative")
+                    put("adGroup", "Adjust Ad group")
+                })
             })
-        }) }
+        }
     }
 
     @Test

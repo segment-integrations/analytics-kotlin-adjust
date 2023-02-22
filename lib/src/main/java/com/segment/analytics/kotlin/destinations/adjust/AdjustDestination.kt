@@ -24,11 +24,11 @@ import kotlinx.serialization.json.put
  * @see <a href="https://github.com/adjust/android_sdk">Adjust Android SDK</a>
  */
 class AdjustDestination : DestinationPlugin(), AndroidLifecycle {
-
+    companion object {
+        private const val REVENUE_KEY = "revenue"
+        private const val CURRENCY_KEY = "currency"
+    }
     internal var settings: AdjustSettings? = null
-
-    private val REVENUE_KEY = "revenue"
-    private val CURRENCY_KEY = "currency"
 
     override val key: String = "Adjust"
 
