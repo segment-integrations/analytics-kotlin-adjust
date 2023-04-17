@@ -9,13 +9,13 @@ plugins {
 val VERSION_NAME: String by project
 
 android {
-    compileSdk = 31
-    buildToolsVersion = "31.0.0"
+    compileSdk = 33
+    buildToolsVersion = "33.0.1"
 
     defaultConfig {
         multiDexEnabled = true
         minSdk = 21
-        targetSdk = 31
+        targetSdk = 33
 
         testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("proguard-consumer-rules.pro")
@@ -40,11 +40,11 @@ android {
 }
 
 dependencies {
-    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.2")
 
-    implementation("com.segment.analytics.kotlin:android:1.6.2")
+    implementation("com.segment.analytics.kotlin:android:1.10.3")
     implementation("androidx.multidex:multidex:2.0.1")
-    implementation("androidx.core:core-ktx:1.7.0")
+    implementation("androidx.core:core-ktx:1.8.0")
 
     implementation("androidx.lifecycle:lifecycle-process:2.5.1")
     implementation("androidx.lifecycle:lifecycle-common-java8:2.5.1")
@@ -58,7 +58,7 @@ dependencies {
 // Test Dependencies
 dependencies {
     testImplementation("junit:junit:4.13.2")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.0")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
     testImplementation("io.mockk:mockk:1.12.4")
 
     // Add Robolectric dependencies.
@@ -77,8 +77,8 @@ dependencies {
 
 // Android Test Dependencies
 dependencies {
-    androidTestImplementation("androidx.test.ext:junit:1.1.4")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.0")
+    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 }
 
 tasks.withType<Test> {
