@@ -44,7 +44,7 @@ dependencies {
 
     implementation("com.segment.analytics.kotlin:android:1.10.3")
     implementation("androidx.multidex:multidex:2.0.1")
-    implementation("androidx.core:core-ktx:1.9.0")
+    implementation("androidx.core:core-ktx:1.8.0")
 
     implementation("androidx.lifecycle:lifecycle-process:2.5.1")
     implementation("androidx.lifecycle:lifecycle-common-java8:2.5.1")
