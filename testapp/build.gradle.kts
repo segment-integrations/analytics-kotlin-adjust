@@ -35,6 +35,7 @@ android {
 }
 
 dependencies {
+    implementation("com.segment.analytics.kotlin:android:1.12.0")
     implementation(project(mapOf("path" to ":lib")))
 
     implementation("androidx.core:core-ktx:1.7.0")
