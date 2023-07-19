@@ -49,7 +49,7 @@ dependencies {
 
 // Partner Dependencies
 dependencies {
-    api("com.adjust.sdk:adjust-android:4.33.0")
+    implementation("com.adjust.sdk:adjust-android:4.33.0")
 }
 
 // Test Dependencies
