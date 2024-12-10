@@ -49,16 +49,13 @@ class AdjustDestination : DestinationPlugin(), AndroidLifecycle {
                         it.appToken, environment
                     )
 
-                    if (it.setEventBufferingEnabled) {
-                        adjustConfig.setEventBufferingEnabled(true)
-                    }
                     if (it.trackAttributionData) {
 //                        registering a delegate callback to notify tracker attribution changes.
                         val listener: OnAttributionChangedListener =
                             AdjustSegmentAttributionChangedListener(analytics)
                         adjustConfig.setOnAttributionChangedListener(listener)
                     }
-                    Adjust.onCreate(adjustConfig)
+                    Adjust.initSdk(adjustConfig)
                     Adjust.onResume()
                     analytics.log("Adjust Destination loaded")
                 }
@@ -96,8 +93,8 @@ class AdjustDestination : DestinationPlugin(), AndroidLifecycle {
 
     override fun reset() {
         super.reset()
-        Adjust.resetSessionPartnerParameters()
-        analytics.log("Adjust.resetSessionPartnerParameters()")
+        Adjust.removeGlobalPartnerParameters()
+        analytics.log("Adjust.removeGlobalPartnerParameters()")
     }
 
     /**
@@ -116,16 +113,16 @@ class AdjustDestination : DestinationPlugin(), AndroidLifecycle {
     }
 
     /**
-     * adding session Partner parameters to Adjust. It will merge session partner parameters with event partner parameter.
+     * adding global Partner parameters to Adjust. It will merge global partner parameters with event partner parameter.
      */
     private fun setPartnerParams(payload: BaseEvent) {
         if (payload.userId.isNotEmpty()) {
-            Adjust.addSessionPartnerParameter("userId", payload.userId)
-            analytics.log("Adjust.addSessionPartnerParameter(userId, ${payload.userId})")
+            Adjust.addGlobalPartnerParameter("userId", payload.userId)
+            analytics.log("Adjust.addGlobalPartnerParameter(userId, ${payload.userId})")
         }
         if (payload.anonymousId.isNotEmpty()) {
-            Adjust.addSessionPartnerParameter("anonymousId", payload.anonymousId)
-            analytics.log("Adjust.addSessionPartnerParameter(anonymousId, ${payload.anonymousId})")
+            Adjust.addGlobalPartnerParameter("anonymousId", payload.anonymousId)
+            analytics.log("Adjust.addGlobalPartnerParameter(anonymousId, ${payload.anonymousId})")
         }
     }
 
@@ -166,7 +163,7 @@ data class AdjustSettings(
     var appToken: String,
     // Adjust Segment value for Send to Production Environment on Adjust
     var setEnvironmentProduction: Boolean = false,
-    //    Adjust Segment value to Buffer and batch events sent to Adjust
+    // (Deprecated) Removed in Adjust v5, has no effect and will be removed
     var setEventBufferingEnabled: Boolean = false,
     //    Adjust Segment value to track Attribution Data
     var trackAttributionData: Boolean = false,

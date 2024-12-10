@@ -135,7 +135,7 @@ class AdjustDestinationTests {
         }
         val identifyEvent = adjustDestination.identify(sampleIdentifyEvent)
         assertNotNull(identifyEvent)
-        verify { Adjust.addSessionPartnerParameter("userId", "adjust-UserID-123") }
+        verify { Adjust.addGlobalPartnerParameter("userId", "adjust-UserID-123") }
     }
 
     @Test
@@ -158,7 +158,7 @@ class AdjustDestinationTests {
         val identifyEvent = adjustDestination.identify(sampleIdentifyEvent)
         assertNotNull(identifyEvent)
         verify {
-            Adjust.addSessionPartnerParameter(
+            Adjust.addGlobalPartnerParameter(
                 "anonymousId",
                 "adjust-anonId-123"
             )
@@ -168,7 +168,7 @@ class AdjustDestinationTests {
     @Test
     fun `reset is handled correctly`() {
         adjustDestination.reset()
-        verify { Adjust.resetSessionPartnerParameters() }
+        verify { Adjust.removeGlobalPartnerParameters() }
     }
 
     @Test
