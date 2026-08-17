@@ -223,6 +223,15 @@ class AdjustDestinationTests {
     }
 
     @Test
+    fun `update() with UpdateType_Initial does not call onResume`() {
+        // Adjust SDK v5 registers its own ActivityLifecycleCallbacks via SystemLifecycleContentProvider.
+        // Calling onResume() here fires a phantom session on background process starts (push notifications,
+        // background jobs) where no Activity ever surfaces.
+        adjustDestination.update(sampleAdjustSettings, Plugin.UpdateType.Initial)
+        verify(exactly = 0) { Adjust.onResume() }
+    }
+
+    @Test
     fun `onActivityResumed() handled correctly`() {
         adjustDestination.onActivityResumed(mockkClass(Activity::class))
         verify { Adjust.onResume() }
