@@ -56,7 +56,6 @@ class AdjustDestination : DestinationPlugin(), AndroidLifecycle {
                         adjustConfig.setOnAttributionChangedListener(listener)
                     }
                     Adjust.initSdk(adjustConfig)
-                    Adjust.onResume()
                     analytics.log("Adjust Destination loaded")
                 }
             }
