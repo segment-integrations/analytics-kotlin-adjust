@@ -92,6 +92,10 @@ afterEvaluate {
         }
     }
 
+    tasks.matching { it.name.startsWith("publish") && it.name.contains("Publication") }.configureEach {
+        dependsOn("assembleRelease")
+    }
+
     signing {
         val pgpKeyContent = System.getenv("SIGNING_PRIVATE_KEY_BASE64")
         if (pgpKeyContent != null) {
