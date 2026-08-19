@@ -10,9 +10,6 @@ plugins {
 }
 
 // Stub secrets to let the project sync and build without the publication values set up
-ext["signing.keyId"] = null
-ext["signing.password"] = null
-ext["signing.secretKeyRingFile"] = null
 ext["ossrhUsername"] = null
 ext["ossrhPassword"] = null
 
@@ -31,23 +28,6 @@ fun loadSecrets(secretPropsFile: File) {
 // Grabbing secrets from gradle.properties file or from environment variables, which could be used on CI
 loadSecrets(project.rootProject.file("gradle.properties"))
 loadSecrets(File("${project.gradle.gradleUserHomeDir}/gradle.properties"))
-if (getExtraString("signing.keyId") == null) {
-    ext["signing.keyId"] = System.getenv("SIGNING_KEY_ID")
-    ext["signing.password"] = System.getenv("SIGNING_KEY_PASSWORD")
-
-    val pgpKeyContent = System.getenv("SIGNING_PRIVATE_KEY_BASE64")
-    if (pgpKeyContent != null) {
-        val tmpDir = File("${project.rootProject.rootDir}/tmp")
-        mkdir(tmpDir)
-        val keyFile = File("$tmpDir/key.pgp")
-        keyFile.createNewFile()
-        val os = keyFile.outputStream()
-        os.write(Base64.getDecoder().decode(pgpKeyContent))
-        os.close()
-
-        ext["signing.secretKeyRingFile"] = keyFile.absolutePath
-    }
-}
 
 fun getExtraString(name: String) = ext[name]?.toString()
 
@@ -113,6 +93,14 @@ afterEvaluate {
     }
 
     signing {
+        val pgpKeyContent = System.getenv("SIGNING_PRIVATE_KEY_BASE64")
+        if (pgpKeyContent != null) {
+            useInMemoryPgpKeys(
+                System.getenv("SIGNING_KEY_ID"),
+                String(Base64.getDecoder().decode(pgpKeyContent)),
+                System.getenv("SIGNING_KEY_PASSWORD")
+            )
+        }
         sign(publishing.publications)
     }
 }
