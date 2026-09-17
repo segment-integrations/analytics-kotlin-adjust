@@ -92,11 +92,6 @@ afterEvaluate {
         }
     }
 
-    tasks.matching { it.name.startsWith("publish") && it.name.contains("Publication") }.configureEach {
-        dependsOn("assembleRelease")
-        mustRunAfter(tasks.matching { it.name.startsWith("sign") })
-    }
-
     signing {
         val pgpKeyContent = System.getenv("SIGNING_PRIVATE_KEY_BASE64")
         if (pgpKeyContent != null) {
@@ -115,11 +110,29 @@ tasks.getByName("publish") {
     dependsOn("build")
 }
 
+// NOTE: appsflyer uses mustRunAfter(tasks.matching { it.name.startsWith("sign") }) here, but that
+// forces Gradle to realize every task in the project to evaluate the predicate, which here trips
+// over AGP's lazily-registered l8DexDesugarLibDebugAndroidTest task (coreLibraryDesugaring has no
+// dependencies configured, unrelated to signing). The publication is named "test", so its sign
+// task's name is deterministic -- reference it directly to avoid forcing unrelated tasks to realize.
+tasks.matching { it.name.startsWith("publish") && it.name.contains("Publication") }.configureEach {
+    mustRunAfter("signTestPublication")
+}
+
 tasks.getByName("publishToMavenLocal") {
     dependsOn("build")
 }
 
 tasks.getByName("publishToSonatype") {
     dependsOn("publish")
+}
+
+tasks.whenTaskAdded {
+    if (name.startsWith("publishTestPublicationTo")) {
+        dependsOn("bundleReleaseAar")
+    }
+    if (name.startsWith("sign") && name.contains("Publication")) {
+        mustRunAfter("bundleReleaseAar")
+    }
 }
 
