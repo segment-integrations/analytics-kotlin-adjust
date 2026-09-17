@@ -94,6 +94,7 @@ afterEvaluate {
 
     tasks.matching { it.name.startsWith("publish") && it.name.contains("Publication") }.configureEach {
         dependsOn("assembleRelease")
+        mustRunAfter(tasks.matching { it.name.startsWith("sign") })
     }
 
     signing {
